@@ -28,7 +28,12 @@ export const Route = createFileRoute("/")({
 type SortKey = "rank" | "price" | "change" | "marketCap";
 
 function Dashboard() {
-  const { data: coins = [], isFetching, refetch } = useQuery(listingsQuery);
+  const { refreshInterval } = useSettings();
+  const { compact } = useMoney();
+  const { data: coins = [], isFetching, refetch } = useQuery({
+    ...listingsQuery,
+    refetchInterval: refreshInterval * 1000,
+  });
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortKey>("rank");
   // Avoid rendering the spinner state during SSR/hydration (client can begin a
