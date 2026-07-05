@@ -17,9 +17,11 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
 
   // Create the chart once, on the client only.
   useEffect(() => {
-    if (!containerRef.current) return;
+    const el = containerRef.current;
+    if (!el) return;
 
-    const chart = createChart(containerRef.current, {
+    const chart = createChart(el, {
+      autoSize: true, // uses a ResizeObserver internally to fill the container
       layout: {
         background: { type: ColorType.Solid, color: "transparent" },
         textColor: "rgba(226, 232, 240, 0.7)",
@@ -34,10 +36,8 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
       timeScale: {
         borderColor: "rgba(148, 163, 184, 0.12)",
         timeVisible: true,
-        secondsVisible: true,
+        secondsVisible: false,
       },
-      width: containerRef.current.clientWidth,
-      height: 420,
     });
 
     const series = chart.addCandlestickSeries({
@@ -57,21 +57,7 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
       chart.timeScale().fitContent();
     }
 
-    const resize = () => {
-      if (containerRef.current) {
-        chart.resize(containerRef.current.clientWidth, 420);
-        chart.timeScale().fitContent();
-      }
-    };
-    // Force an initial size on the next frame; the constructor width is not
-    // always applied to the canvas backing store in some environments.
-    requestAnimationFrame(resize);
-
-    const ro = new ResizeObserver(resize);
-    ro.observe(containerRef.current);
-
     return () => {
-      ro.disconnect();
       chart.remove();
       chartRef.current = null;
       seriesRef.current = null;

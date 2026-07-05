@@ -9,7 +9,7 @@ import { PercentBadge } from "@/components/PercentBadge";
 import { WatchButton } from "@/components/WatchButton";
 import { formatCompact, formatNumber, formatPrice } from "@/lib/format";
 
-const TIMEFRAMES: Timeframe[] = ["5s", "1m", "5m", "15m", "1h", "5h"];
+const TIMEFRAMES: Timeframe[] = ["1m", "5m", "15m", "1h", "6h", "1d"];
 
 const detailQuery = (id: number) =>
   queryOptions({
@@ -64,7 +64,7 @@ function CoinDetailPage() {
     queryKey: ["candles", symbol, timeframe],
     enabled: !!symbol,
     queryFn: () => getCandles({ data: { symbol, timeframe } }),
-    refetchInterval: timeframe === "5s" ? 5_000 : 30_000,
+    refetchInterval: timeframe === "1m" ? 15_000 : 60_000,
   });
 
   if (!coin) return null;
