@@ -118,7 +118,7 @@ function AboutPage() {
             <div key={f.title} className="glass rounded-3xl p-5">
               <div className="mb-2 flex items-center gap-3">
                 <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary/25 to-accent/15">
-                  <f.icon className="h-4.5 w-4.5 text-accent" />
+                  <f.icon className="h-5 w-5 text-accent" />
                 </span>
                 <h3 className="font-semibold">{f.title}</h3>
               </div>
