@@ -129,7 +129,7 @@ function Dashboard() {
           onClick={() => refetch()}
           className="glass flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
         >
-          <RefreshCw className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`} />
+          <RefreshCw className={`h-4 w-4 ${spinning ? "animate-spin" : ""}`} />
           Refresh
         </button>
       </section>
