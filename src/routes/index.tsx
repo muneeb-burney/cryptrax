@@ -4,6 +4,7 @@ import { useQuery, queryOptions } from "@tanstack/react-query";
 import { Search, ArrowUpDown, RefreshCw } from "lucide-react";
 import { getListings, type Coin } from "@/lib/market.functions";
 import { CoinTable } from "@/components/CoinTable";
+import { PercentBadge } from "@/components/PercentBadge";
 import { formatCompact } from "@/lib/format";
 
 const listingsQuery = queryOptions({
