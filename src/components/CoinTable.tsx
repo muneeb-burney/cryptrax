@@ -24,7 +24,7 @@ export function CoinTable({ coins }: { coins: Coin[] }) {
             <Link
               to="/coin/$id"
               params={{ id: String(coin.id) }}
-              className="grid grid-cols-[2rem_1fr_auto] items-center gap-3 px-4 py-3 transition-colors hover:bg-secondary/40 md:grid-cols-[2.5rem_1.5rem_1fr_8rem_7rem_8rem_8rem] md:gap-4 md:px-5 md:py-4"
+              className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-3 px-4 py-3 transition-colors hover:bg-secondary/40 md:grid-cols-[2.5rem_1.5rem_1fr_8rem_7rem_8rem_8rem] md:gap-4 md:px-5 md:py-4"
             >
               <WatchButton coin={coin} />
 
@@ -39,9 +39,10 @@ export function CoinTable({ coins }: { coins: Coin[] }) {
 
               <span className="text-right font-medium tabular-nums">{formatPrice(coin.price)}</span>
 
-              <span className="flex justify-end md:block md:text-right">
+              <span className="text-right">
                 <PercentBadge value={coin.percentChange24h} />
               </span>
+
 
               <span className="hidden text-right text-sm tabular-nums text-muted-foreground md:block">
                 {formatCompact(coin.marketCap)}
