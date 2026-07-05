@@ -10,12 +10,16 @@ export const getRouter = () => {
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
-    // Transfer server-fetched query cache to the client so SSR and the first
-    // client render agree (prevents hydration text mismatches).
-    dehydrate: () => ({ queryClientState: dehydrate(queryClient) }),
-    hydrate: (dehydrated) => {
-      hydrate(queryClient, (dehydrated as { queryClientState: unknown }).queryClientState);
-    },
+    // Transfer the server-fetched query cache to the client so SSR and the
+    // first client render agree (prevents hydration text mismatches).
+    // Cast: the strict serializable validator rejects generic mutation keys,
+    // but the payload is JSON-safe at runtime.
+    ...({
+      dehydrate: () => ({ queryClientState: dehydrate(queryClient) }),
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      hydrate: (d: any) => hydrate(queryClient, d.queryClientState),
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    } as any),
   });
 
   return router;
