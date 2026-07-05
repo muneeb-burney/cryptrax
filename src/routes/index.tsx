@@ -5,7 +5,7 @@ import { Search, ArrowUpDown, RefreshCw } from "lucide-react";
 import { getListings, type Coin } from "@/lib/market.functions";
 import { CoinTable } from "@/components/CoinTable";
 import { PercentBadge } from "@/components/PercentBadge";
-import { formatCompact } from "@/lib/format";
+import { useMoney, useSettings } from "@/hooks/use-settings";
 
 const listingsQuery = queryOptions({
   queryKey: ["listings"],
@@ -28,7 +28,12 @@ export const Route = createFileRoute("/")({
 type SortKey = "rank" | "price" | "change" | "marketCap";
 
 function Dashboard() {
-  const { data: coins = [], isFetching, refetch } = useQuery(listingsQuery);
+  const { refreshInterval } = useSettings();
+  const { compact } = useMoney();
+  const { data: coins = [], isFetching, refetch } = useQuery({
+    ...listingsQuery,
+    refetchInterval: refreshInterval * 1000,
+  });
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortKey>("rank");
   // Avoid rendering the spinner state during SSR/hydration (client can begin a
@@ -81,8 +86,8 @@ function Dashboard() {
 
       {/* Stats */}
       <section className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard label="Total market cap" value={formatCompact(totalCap)} />
-        <StatCard label="24h volume" value={formatCompact(totalVol)} />
+        <StatCard label="Total market cap" value={compact(totalCap)} />
+        <StatCard label="24h volume" value={compact(totalVol)} />
         <StatCard
           label="Top gainer (24h)"
           value={

@@ -3,11 +3,13 @@ import { PercentBadge } from "./PercentBadge";
 import { WatchButton } from "./WatchButton";
 import { CoinLogo } from "./CoinLogo";
 import { Sparkline } from "./Sparkline";
-import { formatCompact, formatPrice } from "@/lib/format";
+import { useMoney } from "@/hooks/use-settings";
 import { cn } from "@/lib/utils";
 import type { Coin } from "@/lib/market.functions";
 
 export function CoinTable({ coins }: { coins: Coin[] }) {
+  const { price, compact } = useMoney();
+
   return (
     <div className="glass overflow-hidden rounded-3xl">
       {/* Header */}
@@ -49,7 +51,7 @@ export function CoinTable({ coins }: { coins: Coin[] }) {
                   </div>
                 </div>
 
-                <span className="text-right font-medium tabular-nums">{formatPrice(coin.price)}</span>
+                <span className="text-right font-medium tabular-nums">{price(coin.price)}</span>
 
                 <span className="text-right">
                   <PercentBadge value={coin.percentChange24h} />
@@ -60,11 +62,11 @@ export function CoinTable({ coins }: { coins: Coin[] }) {
                 </span>
 
                 <span className="hidden text-right text-sm tabular-nums text-muted-foreground md:block">
-                  {formatCompact(coin.marketCap)}
+                  {compact(coin.marketCap)}
                 </span>
 
                 <span className="hidden text-right text-sm tabular-nums text-muted-foreground md:block">
-                  {formatCompact(coin.volume24h)}
+                  {compact(coin.volume24h)}
                 </span>
               </Link>
             </li>

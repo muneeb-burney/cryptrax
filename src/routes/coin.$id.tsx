@@ -10,7 +10,8 @@ import { GlassToggle } from "@/components/glass/GlassToggle";
 import { GlassSlider } from "@/components/glass/GlassSlider";
 import { PercentBadge } from "@/components/PercentBadge";
 import { WatchButton } from "@/components/WatchButton";
-import { formatCompact, formatNumber, formatPrice } from "@/lib/format";
+import { formatNumber, formatPrice } from "@/lib/format";
+import { useMoney, useSettings } from "@/hooks/use-settings";
 
 const TIMEFRAMES: Timeframe[] = ["1m", "5m", "15m", "1h", "6h", "1d"];
 
@@ -60,7 +61,12 @@ export const Route = createFileRoute("/coin/$id")({
 
 function CoinDetailPage() {
   const { id } = Route.useParams();
-  const { data: coin } = useQuery(detailQuery(Number(id)));
+  const { price, compact } = useMoney();
+  const { refreshInterval } = useSettings();
+  const { data: coin } = useQuery({
+    ...detailQuery(Number(id)),
+    refetchInterval: refreshInterval * 1000,
+  });
   const [timeframe, setTimeframe] = useState<Timeframe>("1h");
   const [showSMA, setShowSMA] = useState(false);
   const [showEMA, setShowEMA] = useState(false);
@@ -116,7 +122,7 @@ function CoinDetailPage() {
               </span>
             </div>
             <div className="mt-1 flex items-center gap-3">
-              <span className="text-3xl font-bold tabular-nums">{formatPrice(coin.price)}</span>
+              <span className="text-3xl font-bold tabular-nums">{price(coin.price)}</span>
               <PercentBadge value={coin.percentChange24h} />
             </div>
           </div>
@@ -126,8 +132,8 @@ function CoinDetailPage() {
 
       {/* Stats */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Stat label="Market cap" value={formatCompact(coin.marketCap)} />
-        <Stat label="Volume (24h)" value={formatCompact(coin.volume24h)} />
+        <Stat label="Market cap" value={compact(coin.marketCap)} />
+        <Stat label="Volume (24h)" value={compact(coin.volume24h)} />
         <Stat label="Circulating supply" value={`${formatNumber(coin.circulatingSupply)} ${coin.symbol}`} />
         <Stat
           label="Max supply"

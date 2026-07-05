@@ -90,6 +90,27 @@
   --chart-5: oklch(0.7 0.2 20);
 }
 
+/* "Darker" theme variant — deeper midnight surfaces + dimmer ambient glow */
+html.theme-darker {
+  --background: oklch(0.1 0.02 250);
+  --card: oklch(0.15 0.03 250 / 0.55);
+  --popover: oklch(0.13 0.03 250 / 0.94);
+  --secondary: oklch(0.24 0.025 250 / 0.5);
+  --muted: oklch(0.22 0.02 250 / 0.5);
+}
+
+html.theme-darker body {
+  background-color: oklch(0.08 0.018 250);
+  background-image:
+    radial-gradient(60rem 60rem at 12% -10%, oklch(0.32 0.13 250 / 0.28), transparent 60%),
+    radial-gradient(50rem 50rem at 95% 0%, oklch(0.34 0.12 220 / 0.2), transparent 55%),
+    radial-gradient(55rem 55rem at 50% 120%, oklch(0.3 0.12 235 / 0.18), transparent 60%);
+}
+
+html.theme-darker .bg-orbs span {
+  opacity: 0.32;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
