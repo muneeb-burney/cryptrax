@@ -31,8 +31,8 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
         crosshair: { mode: CrosshairMode.Normal },
         rightPriceScale: { borderColor: "rgba(148, 163, 184, 0.12)" },
         timeScale: { borderColor: "rgba(148, 163, 184, 0.12)", timeVisible: true, secondsVisible: true },
+        width: containerRef.current.clientWidth,
         height: 420,
-        autoSize: true,
       });
 
       const series = chart.addCandlestickSeries({
