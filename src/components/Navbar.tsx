@@ -74,6 +74,8 @@ export function Navbar() {
         <div className="flex items-center gap-1 sm:gap-2">
           <NavItem to="/" label="Markets" icon={<CandlestickChart className="h-4 w-4" />} />
           {user && <NavItem to="/watchlist" label="Watchlist" icon={<Star className="h-4 w-4" />} />}
+          <NavItem to="/about" label="About" icon={<Info className="h-4 w-4" />} />
+          <NavItem to="/settings" label="Settings" icon={<SettingsIcon className="h-4 w-4" />} />
 
           {loading ? null : user ? (
             <div className="ml-1 flex items-center gap-2">
