@@ -122,7 +122,7 @@ function CoinDetailPage() {
               </span>
             </div>
             <div className="mt-1 flex items-center gap-3">
-              <span className="text-3xl font-bold tabular-nums">{formatPrice(coin.price)}</span>
+              <span className="text-3xl font-bold tabular-nums">{price(coin.price)}</span>
               <PercentBadge value={coin.percentChange24h} />
             </div>
           </div>
@@ -132,8 +132,8 @@ function CoinDetailPage() {
 
       {/* Stats */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Stat label="Market cap" value={formatCompact(coin.marketCap)} />
-        <Stat label="Volume (24h)" value={formatCompact(coin.volume24h)} />
+        <Stat label="Market cap" value={compact(coin.marketCap)} />
+        <Stat label="Volume (24h)" value={compact(coin.volume24h)} />
         <Stat label="Circulating supply" value={`${formatNumber(coin.circulatingSupply)} ${coin.symbol}`} />
         <Stat
           label="Max supply"
