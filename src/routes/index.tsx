@@ -133,9 +133,9 @@ function Dashboard() {
   );
 }
 
-function StatCard({ label, value }: { label: string; value: string }) {
+function StatCard({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="glass rounded-3xl px-5 py-4">
+    <div className="glass lift-hover rounded-3xl px-5 py-4">
       <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
       <div className="mt-1 text-xl font-semibold tabular-nums">{value}</div>
     </div>
