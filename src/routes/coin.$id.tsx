@@ -10,7 +10,8 @@ import { GlassToggle } from "@/components/glass/GlassToggle";
 import { GlassSlider } from "@/components/glass/GlassSlider";
 import { PercentBadge } from "@/components/PercentBadge";
 import { WatchButton } from "@/components/WatchButton";
-import { formatCompact, formatNumber, formatPrice } from "@/lib/format";
+import { formatNumber, formatPrice } from "@/lib/format";
+import { useMoney, useSettings } from "@/hooks/use-settings";
 
 const TIMEFRAMES: Timeframe[] = ["1m", "5m", "15m", "1h", "6h", "1d"];
 
