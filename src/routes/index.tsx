@@ -4,6 +4,7 @@ import { useQuery, queryOptions } from "@tanstack/react-query";
 import { Search, ArrowUpDown, RefreshCw } from "lucide-react";
 import { getListings, type Coin } from "@/lib/market.functions";
 import { CoinTable } from "@/components/CoinTable";
+import { PercentBadge } from "@/components/PercentBadge";
 import { formatCompact } from "@/lib/format";
 
 const listingsQuery = queryOptions({
@@ -56,6 +57,13 @@ function Dashboard() {
     <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
       {/* Hero */}
       <section className="mb-8">
+        <span className="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+          </span>
+          Live prices
+        </span>
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           The crypto market, crystal clear
         </h1>
@@ -71,9 +79,19 @@ function Dashboard() {
         <StatCard label="24h volume" value={formatCompact(totalVol)} />
         <StatCard
           label="Top gainer (24h)"
-          value={topGainer ? `${topGainer.symbol}  ${topGainer.percentChange24h >= 0 ? "+" : ""}${topGainer.percentChange24h.toFixed(1)}%` : "—"}
+          value={
+            topGainer ? (
+              <span className="flex items-center gap-2">
+                <span>{topGainer.symbol}</span>
+                <PercentBadge value={topGainer.percentChange24h} />
+              </span>
+            ) : (
+              "—"
+            )
+          }
         />
       </section>
+
 
       {/* Controls */}
       <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -115,9 +133,9 @@ function Dashboard() {
   );
 }
 
-function StatCard({ label, value }: { label: string; value: string }) {
+function StatCard({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="glass rounded-3xl px-5 py-4">
+    <div className="glass lift-hover rounded-3xl px-5 py-4">
       <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
       <div className="mt-1 text-xl font-semibold tabular-nums">{value}</div>
     </div>
