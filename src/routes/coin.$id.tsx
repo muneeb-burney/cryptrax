@@ -62,6 +62,9 @@ function CoinDetailPage() {
   const { id } = Route.useParams();
   const { data: coin } = useQuery(detailQuery(Number(id)));
   const [timeframe, setTimeframe] = useState<Timeframe>("1h");
+  const [showSMA, setShowSMA] = useState(false);
+  const [showEMA, setShowEMA] = useState(false);
+  const [maPeriod, setMaPeriod] = useState(14);
 
   const symbol = coin?.symbol ?? "";
   const candlesQuery = useQuery({
@@ -71,10 +74,20 @@ function CoinDetailPage() {
     refetchInterval: timeframe === "1m" ? 15_000 : 60_000,
   });
 
+  const candles = candlesQuery.data?.candles ?? [];
+  const pair = candlesQuery.data?.pair ?? null;
+
+  // Live spot price for the current forming candle — polled frequently.
+  const tickerQuery = useQuery({
+    queryKey: ["ticker", pair],
+    enabled: !!pair,
+    queryFn: () => getTicker({ data: { pair: pair as string } }),
+    refetchInterval: 2500,
+  });
+  const livePrice = tickerQuery.data?.price ?? null;
+
   if (!coin) return null;
 
-  const candles = candlesQuery.data?.candles ?? [];
-  const pair = candlesQuery.data?.pair;
 
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
