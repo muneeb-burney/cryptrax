@@ -64,7 +64,7 @@ function CoinDetailPage() {
     queryKey: ["candles", symbol, timeframe],
     enabled: !!symbol,
     queryFn: () => getCandles({ data: { symbol, timeframe } }),
-    refetchInterval: timeframe === "5s" ? 5_000 : 30_000,
+    refetchInterval: timeframe === "1m" ? 15_000 : 60_000,
   });
 
   if (!coin) return null;
