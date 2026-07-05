@@ -86,8 +86,8 @@ function Dashboard() {
 
       {/* Stats */}
       <section className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard label="Total market cap" value={formatCompact(totalCap)} />
-        <StatCard label="24h volume" value={formatCompact(totalVol)} />
+        <StatCard label="Total market cap" value={compact(totalCap)} />
+        <StatCard label="24h volume" value={compact(totalVol)} />
         <StatCard
           label="Top gainer (24h)"
           value={
