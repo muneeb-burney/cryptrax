@@ -72,6 +72,7 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
 
   // Update data whenever candles change.
   useEffect(() => {
+    console.log("[chart] candles", candles.length, "series?", !!seriesRef.current, "w", containerRef.current?.clientWidth);
     if (!seriesRef.current) return;
     seriesRef.current.setData(candles as never);
     chartRef.current?.timeScale().fitContent();
