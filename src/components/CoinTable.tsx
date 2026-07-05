@@ -3,7 +3,7 @@ import { PercentBadge } from "./PercentBadge";
 import { WatchButton } from "./WatchButton";
 import { CoinLogo } from "./CoinLogo";
 import { Sparkline } from "./Sparkline";
-import { formatCompact, formatPrice } from "@/lib/format";
+import { useMoney } from "@/hooks/use-settings";
 import { cn } from "@/lib/utils";
 import type { Coin } from "@/lib/market.functions";
 
