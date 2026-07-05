@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import { Search, ArrowUpDown, RefreshCw } from "lucide-react";
 import { getListings, type Coin } from "@/lib/market.functions";
