@@ -9,7 +9,7 @@ import { PercentBadge } from "@/components/PercentBadge";
 import { WatchButton } from "@/components/WatchButton";
 import { formatCompact, formatNumber, formatPrice } from "@/lib/format";
 
-const TIMEFRAMES: Timeframe[] = ["5s", "1m", "5m", "15m", "1h", "5h"];
+const TIMEFRAMES: Timeframe[] = ["1m", "5m", "15m", "1h", "6h", "1d"];
 
 const detailQuery = (id: number) =>
   queryOptions({
