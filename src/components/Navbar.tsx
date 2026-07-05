@@ -37,14 +37,39 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
       <nav className="glass mx-auto flex max-w-6xl items-center justify-between rounded-3xl px-4 py-3 sm:px-6">
-        <Link to="/" className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-primary to-accent text-primary-foreground shadow-lg ring-1 ring-inset ring-white/25">
-            <CandlestickChart className="h-5 w-5" strokeWidth={2.5} />
+        <Link to="/" className="group flex items-center gap-2.5">
+          {/* Abstract liquid-glass mark */}
+          <span className="relative">
+            {/* Ambient glow */}
+            <span
+              aria-hidden="true"
+              className="absolute -inset-1 rounded-xl bg-gradient-to-tr from-primary to-accent opacity-40 blur-md transition-opacity duration-500 group-hover:opacity-70"
+            />
+            {/* Glass container */}
+            <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-white/5 shadow-2xl backdrop-blur-xl">
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-br from-primary/25 to-transparent"
+              />
+              {/* Stylized candlestick mark */}
+              <span className="relative flex items-end gap-[3px]">
+                <span className="h-3.5 w-[3px] rounded-full bg-white/30" />
+                <span className="h-6 w-[3px] rounded-full bg-gradient-to-t from-primary to-accent shadow-[0_0_8px_var(--color-accent)]" />
+                <span className="h-4 w-[3px] rounded-full bg-white/30" />
+              </span>
+              {/* Top refraction line */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"
+              />
+            </span>
           </span>
-          <span className="text-lg font-bold tracking-tight">
-            Cryp<span className="text-primary">trax</span>
+          <span className="flex items-baseline text-xl tracking-tight">
+            <span className="font-extrabold text-foreground">Crypt</span>
+            <span className="font-light text-accent drop-shadow-[0_0_12px_var(--color-accent)]">rax</span>
           </span>
         </Link>
+
 
         <div className="flex items-center gap-1 sm:gap-2">
           <NavItem to="/" label="Markets" icon={<CandlestickChart className="h-4 w-4" />} />
