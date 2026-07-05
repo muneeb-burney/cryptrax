@@ -61,7 +61,12 @@ export const Route = createFileRoute("/coin/$id")({
 
 function CoinDetailPage() {
   const { id } = Route.useParams();
-  const { data: coin } = useQuery(detailQuery(Number(id)));
+  const { price, compact } = useMoney();
+  const { refreshInterval } = useSettings();
+  const { data: coin } = useQuery({
+    ...detailQuery(Number(id)),
+    refetchInterval: refreshInterval * 1000,
+  });
   const [timeframe, setTimeframe] = useState<Timeframe>("1h");
   const [showSMA, setShowSMA] = useState(false);
   const [showEMA, setShowEMA] = useState(false);
