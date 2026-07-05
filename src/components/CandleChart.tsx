@@ -17,6 +17,7 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
 
   // Create the chart once, on the client only.
   useEffect(() => {
+    console.log("[chart] create effect running, container?", !!containerRef.current);
     if (!containerRef.current) return;
 
     const chart = createChart(containerRef.current, {
