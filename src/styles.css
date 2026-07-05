@@ -102,11 +102,11 @@
   body {
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    background-color: oklch(0.14 0.03 265);
+    background-color: oklch(0.13 0.03 250);
     background-image:
-      radial-gradient(60rem 60rem at 12% -10%, oklch(0.4 0.18 275 / 0.35), transparent 60%),
-      radial-gradient(50rem 50rem at 95% 0%, oklch(0.45 0.15 200 / 0.28), transparent 55%),
-      radial-gradient(55rem 55rem at 50% 120%, oklch(0.4 0.16 320 / 0.25), transparent 60%);
+      radial-gradient(60rem 60rem at 12% -10%, oklch(0.4 0.16 250 / 0.35), transparent 60%),
+      radial-gradient(50rem 50rem at 95% 0%, oklch(0.45 0.14 220 / 0.28), transparent 55%),
+      radial-gradient(55rem 55rem at 50% 120%, oklch(0.38 0.14 235 / 0.25), transparent 60%);
     background-attachment: fixed;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
