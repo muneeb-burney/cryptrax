@@ -68,6 +68,33 @@ export const getListings = createServerFn({ method: "GET" }).handler(
   },
 );
 
+export const getQuotesByIds = createServerFn({ method: "GET" })
+  .inputValidator((data: { ids: number[] }) => {
+    const ids = (data?.ids ?? [])
+      .map((n) => Number(n))
+      .filter((n) => Number.isFinite(n) && n > 0)
+      .slice(0, 100);
+    return { ids };
+  })
+  .handler(async ({ data }): Promise<Coin[]> => {
+    if (data.ids.length === 0) return [];
+    const url = `${CMC_BASE}/v2/cryptocurrency/quotes/latest?id=${data.ids.join(",")}&convert=USD`;
+    const res = await fetch(url, { headers: cmcHeaders() });
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("CMC quotes failed", res.status, text);
+      throw new Error("Could not load market data.");
+    }
+    const json = (await res.json()) as any;
+    const map = json.data ?? {};
+    return data.ids
+      .map((id) => map[String(id)])
+      .filter(Boolean)
+      .map(mapCoin);
+  });
+
+
+
 export const getCoinDetail = createServerFn({ method: "GET" })
   .inputValidator((data: { id: number }) => {
     const id = Number(data?.id);
