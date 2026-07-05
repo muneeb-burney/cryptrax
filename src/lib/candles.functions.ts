@@ -76,3 +76,26 @@ export const getCandles = createServerFn({ method: "GET" })
     console.error("No Coinbase market found for", data.symbol);
     return { candles: [], pair: null };
   });
+
+// Live spot price for the current forming candle. Called on a short interval.
+export const getTicker = createServerFn({ method: "GET" })
+  .inputValidator((data: { pair: string }) => {
+    const pair = String(data?.pair ?? "").toUpperCase().replace(/[^A-Z0-9-]/g, "");
+    if (!pair) throw new Error("Missing pair.");
+    return { pair };
+  })
+  .handler(async ({ data }): Promise<{ price: number | null; time: number }> => {
+    const url = `https://api.exchange.coinbase.com/products/${data.pair}/ticker`;
+    const res = await fetch(url, {
+      headers: { "User-Agent": "Cryptrax/1.0", Accept: "application/json" },
+    });
+    if (!res.ok) return { price: null, time: Math.floor(Date.now() / 1000) };
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    const json = (await res.json()) as any;
+    const price = Number(json?.price);
+    return {
+      price: Number.isFinite(price) ? price : null,
+      time: Math.floor(Date.now() / 1000),
+    };
+  });
+
