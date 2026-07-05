@@ -157,18 +157,20 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <div aria-hidden="true" className="bg-orbs">
-          <span className="orb-1" />
-          <span className="orb-2" />
-          <span className="orb-3" />
-        </div>
-        <div className="flex min-h-screen flex-col">
-          <Navbar />
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </div>
-      </AuthProvider>
+      <SettingsProvider>
+        <AuthProvider>
+          <div aria-hidden="true" className="bg-orbs">
+            <span className="orb-1" />
+            <span className="orb-2" />
+            <span className="orb-3" />
+          </div>
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </div>
+        </AuthProvider>
+      </SettingsProvider>
     </QueryClientProvider>
   );
 }
