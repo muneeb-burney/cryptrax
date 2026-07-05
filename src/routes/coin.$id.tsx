@@ -140,25 +140,52 @@ function CoinDetailPage() {
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-semibold">Price chart</h2>
-            <p className="text-xs text-muted-foreground">
+            <p className="flex items-center gap-2 text-xs text-muted-foreground">
               {pair ? `${pair} · candlesticks` : "Real-time candlesticks"}
+              {livePrice != null && (
+                <span className="inline-flex items-center gap-1 text-success">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-success" />
+                  </span>
+                  live
+                </span>
+              )}
             </p>
           </div>
-          <div className="glass flex gap-1 self-start rounded-full p-1">
-            {TIMEFRAMES.map((tf) => (
-              <button
-                key={tf}
-                onClick={() => setTimeframe(tf)}
-                className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
-                  timeframe === tf
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {tf}
-              </button>
-            ))}
+          <GlassSegmented
+            className="self-start"
+            value={timeframe}
+            onChange={(tf) => setTimeframe(tf)}
+            options={TIMEFRAMES.map((tf) => ({ value: tf, label: tf }))}
+          />
+        </div>
+
+        {/* Indicator controls — iOS Liquid Glass toggles + slider */}
+        <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-5">
+            <GlassToggle
+              checked={showSMA}
+              onChange={setShowSMA}
+              label={<span className="flex items-center gap-1.5"><span className="h-0.5 w-4 rounded-full" style={{ background: "#e6b450" }} />SMA</span>}
+            />
+            <GlassToggle
+              checked={showEMA}
+              onChange={setShowEMA}
+              label={<span className="flex items-center gap-1.5"><span className="h-0.5 w-4 rounded-full" style={{ background: "#5cc8ff" }} />EMA</span>}
+            />
           </div>
+          {(showSMA || showEMA) && (
+            <GlassSlider
+              className="max-w-xs"
+              label="MA period"
+              value={maPeriod}
+              min={2}
+              max={100}
+              displayValue={maPeriod}
+              onChange={setMaPeriod}
+            />
+          )}
         </div>
 
         {candlesQuery.isLoading ? (
@@ -170,9 +197,15 @@ function CoinDetailPage() {
             No candlestick data is available for {coin.symbol}.
           </div>
         ) : (
-          <CandleChart candles={candles} />
+          <CandleChart
+            candles={candles}
+            livePrice={livePrice}
+            granularity={timeframeSeconds(timeframe)}
+            indicators={{ sma: showSMA, ema: showEMA, period: maPeriod }}
+          />
         )}
       </div>
+
 
       {/* Description */}
       {coin.description && (
