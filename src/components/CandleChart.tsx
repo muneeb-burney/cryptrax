@@ -6,6 +6,8 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
+  const dataRef = useRef<Candle[]>(candles);
+  dataRef.current = candles;
 
   // Create the chart once, on the client only.
   useEffect(() => {
