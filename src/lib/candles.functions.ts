@@ -21,6 +21,10 @@ const TF_GRANULARITY: Record<Timeframe, number> = {
   "1d": 86400,
 };
 
+export function timeframeSeconds(tf: Timeframe): number {
+  return TF_GRANULARITY[tf];
+}
+
 const VALID_TF = new Set<string>(Object.keys(TF_GRANULARITY));
 
 // Some assets quote against USDT/USDC rather than USD on Coinbase.
@@ -29,7 +33,7 @@ const QUOTES = ["USD", "USDT", "USDC"];
 async function fetchCoinbase(product: string, granularity: number): Promise<Candle[] | null> {
   const url = `https://api.exchange.coinbase.com/products/${product}/candles?granularity=${granularity}`;
   const res = await fetch(url, {
-    headers: { "User-Agent": "GlassCoin/1.0", Accept: "application/json" },
+    headers: { "User-Agent": "Cryptrax/1.0", Accept: "application/json" },
   });
   if (!res.ok) return null;
 
