@@ -210,7 +210,7 @@
   left: -6%;
   width: 34rem;
   height: 34rem;
-  background: radial-gradient(circle, oklch(0.6 0.2 275 / 0.55), transparent 70%);
+  background: radial-gradient(circle, oklch(0.58 0.18 250 / 0.55), transparent 70%);
   animation: orb-float 18s ease-in-out infinite;
 }
 
@@ -219,7 +219,7 @@
   right: -10%;
   width: 30rem;
   height: 30rem;
-  background: radial-gradient(circle, oklch(0.62 0.17 200 / 0.5), transparent 70%);
+  background: radial-gradient(circle, oklch(0.62 0.16 220 / 0.5), transparent 70%);
   animation: orb-float 22s ease-in-out infinite reverse;
 }
 
@@ -228,7 +228,7 @@
   left: 30%;
   width: 32rem;
   height: 32rem;
-  background: radial-gradient(circle, oklch(0.58 0.19 320 / 0.45), transparent 70%);
+  background: radial-gradient(circle, oklch(0.55 0.16 235 / 0.45), transparent 70%);
   animation: orb-float 26s ease-in-out infinite;
 }
 
