@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CoinIdRouteImport } from './routes/coin.$id'
 import { Route as AuthenticatedWatchlistRouteImport } from './routes/_authenticated/watchlist'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -43,12 +49,14 @@ const AuthenticatedWatchlistRoute = AuthenticatedWatchlistRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/settings': typeof SettingsRoute
   '/watchlist': typeof AuthenticatedWatchlistRoute
   '/coin/$id': typeof CoinIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/settings': typeof SettingsRoute
   '/watchlist': typeof AuthenticatedWatchlistRoute
   '/coin/$id': typeof CoinIdRoute
 }
@@ -57,19 +65,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/settings': typeof SettingsRoute
   '/_authenticated/watchlist': typeof AuthenticatedWatchlistRoute
   '/coin/$id': typeof CoinIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/watchlist' | '/coin/$id'
+  fullPaths: '/' | '/auth' | '/settings' | '/watchlist' | '/coin/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/watchlist' | '/coin/$id'
+  to: '/' | '/auth' | '/settings' | '/watchlist' | '/coin/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/settings'
     | '/_authenticated/watchlist'
     | '/coin/$id'
   fileRoutesById: FileRoutesById
@@ -78,11 +88,19 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  SettingsRoute: typeof SettingsRoute
   CoinIdRoute: typeof CoinIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -136,6 +154,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  SettingsRoute: SettingsRoute,
   CoinIdRoute: CoinIdRoute,
 }
 export const routeTree = rootRouteImport
