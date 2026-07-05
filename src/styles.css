@@ -114,12 +114,35 @@
 }
 
 @utility glass {
+  position: relative;
   background: var(--color-glass);
   backdrop-filter: blur(24px) saturate(150%);
   border: 1px solid var(--color-glass-border);
   box-shadow:
     0 8px 32px oklch(0.1 0.03 265 / 0.4),
     inset 0 1px 0 oklch(1 0 0 / 0.08);
+
+  /* Gradient border: brighter on the top-left edge, fading elsewhere */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      oklch(1 0 0 / 0.55),
+      oklch(1 0 0 / 0.12) 35%,
+      oklch(1 0 0 / 0.02) 70%,
+      oklch(1 0 0 / 0.06)
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 @utility glass-strong {
@@ -130,3 +153,82 @@
     0 12px 40px oklch(0.1 0.03 265 / 0.5),
     inset 0 1px 0 oklch(1 0 0 / 0.1);
 }
+
+/* Soft glow + lift on hover for cards and rows */
+@utility glow-hover {
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    background-color 0.3s ease;
+  &:hover {
+    box-shadow:
+      0 16px 44px oklch(0.1 0.03 265 / 0.55),
+      0 0 28px oklch(0.72 0.16 265 / 0.22);
+  }
+}
+
+@utility lift-hover {
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 20px 50px oklch(0.1 0.03 265 / 0.55),
+      0 0 32px oklch(0.72 0.16 265 / 0.25);
+  }
+}
+
+@keyframes orb-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -40px, 0) scale(1.12);
+  }
+}
+
+.bg-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-orbs span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.5;
+  will-change: transform;
+}
+
+.bg-orbs .orb-1 {
+  top: -8%;
+  left: -6%;
+  width: 34rem;
+  height: 34rem;
+  background: radial-gradient(circle, oklch(0.6 0.2 275 / 0.55), transparent 70%);
+  animation: orb-float 18s ease-in-out infinite;
+}
+
+.bg-orbs .orb-2 {
+  top: 20%;
+  right: -10%;
+  width: 30rem;
+  height: 30rem;
+  background: radial-gradient(circle, oklch(0.62 0.17 200 / 0.5), transparent 70%);
+  animation: orb-float 22s ease-in-out infinite reverse;
+}
+
+.bg-orbs .orb-3 {
+  bottom: -12%;
+  left: 30%;
+  width: 32rem;
+  height: 32rem;
+  background: radial-gradient(circle, oklch(0.58 0.19 320 / 0.45), transparent 70%);
+  animation: orb-float 26s ease-in-out infinite;
+}
+
