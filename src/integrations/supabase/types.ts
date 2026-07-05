@@ -14,7 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      watchlist: {
+        Row: {
+          cmc_id: number
+          created_at: string
+          id: string
+          name: string
+          slug: string | null
+          symbol: string
+          user_id: string
+        }
+        Insert: {
+          cmc_id: number
+          created_at?: string
+          id?: string
+          name: string
+          slug?: string | null
+          symbol: string
+          user_id: string
+        }
+        Update: {
+          cmc_id?: number
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string | null
+          symbol?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
