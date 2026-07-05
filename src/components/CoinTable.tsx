@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import type { Coin } from "@/lib/market.functions";
 
 export function CoinTable({ coins }: { coins: Coin[] }) {
+  const { price, compact } = useMoney();
+
   return (
     <div className="glass overflow-hidden rounded-3xl">
       {/* Header */}
