@@ -15,8 +15,13 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
     let cleanupResize: (() => void) | undefined;
 
     (async () => {
-      const { createChart, ColorType, CrosshairMode } = await import("lightweight-charts");
-      if (disposed || !containerRef.current) return;
+      const mod = await import("lightweight-charts");
+      console.log("[chart] imported keys", Object.keys(mod).slice(0, 20).join(","));
+      const { createChart, ColorType, CrosshairMode } = mod;
+      if (disposed || !containerRef.current) {
+        console.log("[chart] aborted disposed?", disposed, "hasContainer?", !!containerRef.current);
+        return;
+      }
 
       const chart = createChart(containerRef.current, {
         layout: {
