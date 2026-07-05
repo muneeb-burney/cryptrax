@@ -1,6 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { LineChart, Star, LogOut, User as UserIcon } from "lucide-react";
+import { CandlestickChart, Star, LogOut, User as UserIcon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -37,15 +37,17 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
       <nav className="glass mx-auto flex max-w-6xl items-center justify-between rounded-3xl px-4 py-3 sm:px-6">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg">
-            <LineChart className="h-5 w-5" />
+        <Link to="/" className="flex items-center gap-2.5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-primary to-accent text-primary-foreground shadow-lg ring-1 ring-inset ring-white/25">
+            <CandlestickChart className="h-5 w-5" strokeWidth={2.5} />
           </span>
-          <span className="text-lg font-semibold tracking-tight">GlassCoin</span>
+          <span className="text-lg font-bold tracking-tight">
+            Cryp<span className="text-primary">trax</span>
+          </span>
         </Link>
 
         <div className="flex items-center gap-1 sm:gap-2">
-          <NavItem to="/" label="Markets" icon={<LineChart className="h-4 w-4" />} />
+          <NavItem to="/" label="Markets" icon={<CandlestickChart className="h-4 w-4" />} />
           {user && <NavItem to="/watchlist" label="Watchlist" icon={<Star className="h-4 w-4" />} />}
 
           {loading ? null : user ? (

@@ -80,14 +80,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "GlassCoin — Live Crypto Market Tracker" },
+      { title: "Cryptrax — Live Crypto Market Tracker" },
       {
         name: "description",
         content:
           "Track the top cryptocurrencies in real time with live prices, candlestick charts, and a personal watchlist. Clean glassmorphism dashboard.",
       },
-      { name: "author", content: "GlassCoin" },
-      { property: "og:title", content: "GlassCoin — Live Crypto Market Tracker" },
+      { name: "author", content: "Cryptrax" },
+      { property: "og:title", content: "Cryptrax — Live Crypto Market Tracker" },
       {
         property: "og:description",
         content:

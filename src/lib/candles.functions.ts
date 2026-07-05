@@ -21,6 +21,10 @@ const TF_GRANULARITY: Record<Timeframe, number> = {
   "1d": 86400,
 };
 
+export function timeframeSeconds(tf: Timeframe): number {
+  return TF_GRANULARITY[tf];
+}
+
 const VALID_TF = new Set<string>(Object.keys(TF_GRANULARITY));
 
 // Some assets quote against USDT/USDC rather than USD on Coinbase.
@@ -29,7 +33,7 @@ const QUOTES = ["USD", "USDT", "USDC"];
 async function fetchCoinbase(product: string, granularity: number): Promise<Candle[] | null> {
   const url = `https://api.exchange.coinbase.com/products/${product}/candles?granularity=${granularity}`;
   const res = await fetch(url, {
-    headers: { "User-Agent": "GlassCoin/1.0", Accept: "application/json" },
+    headers: { "User-Agent": "Cryptrax/1.0", Accept: "application/json" },
   });
   if (!res.ok) return null;
 
@@ -72,3 +76,26 @@ export const getCandles = createServerFn({ method: "GET" })
     console.error("No Coinbase market found for", data.symbol);
     return { candles: [], pair: null };
   });
+
+// Live spot price for the current forming candle. Called on a short interval.
+export const getTicker = createServerFn({ method: "GET" })
+  .inputValidator((data: { pair: string }) => {
+    const pair = String(data?.pair ?? "").toUpperCase().replace(/[^A-Z0-9-]/g, "");
+    if (!pair) throw new Error("Missing pair.");
+    return { pair };
+  })
+  .handler(async ({ data }): Promise<{ price: number | null; time: number }> => {
+    const url = `https://api.exchange.coinbase.com/products/${data.pair}/ticker`;
+    const res = await fetch(url, {
+      headers: { "User-Agent": "Cryptrax/1.0", Accept: "application/json" },
+    });
+    if (!res.ok) return { price: null, time: Math.floor(Date.now() / 1000) };
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    const json = (await res.json()) as any;
+    const price = Number(json?.price);
+    return {
+      price: Number.isFinite(price) ? price : null,
+      time: Math.floor(Date.now() / 1000),
+    };
+  });
+
