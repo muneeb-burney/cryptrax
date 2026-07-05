@@ -57,18 +57,18 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
       series.setData(dataRef.current as never);
       chart.timeScale().fitContent();
     }
-    console.log(
-      "[chart] created w",
-      containerRef.current.clientWidth,
-      "data",
-      dataRef.current.length,
-      "canvasW",
-      containerRef.current.querySelector("canvas")?.width,
-    );
 
-    const ro = new ResizeObserver(() => {
-      if (containerRef.current) chart.resize(containerRef.current.clientWidth, 420);
-    });
+    const resize = () => {
+      if (containerRef.current) {
+        chart.resize(containerRef.current.clientWidth, 420);
+        chart.timeScale().fitContent();
+      }
+    };
+    // Force an initial size on the next frame; the constructor width is not
+    // always applied to the canvas backing store in some environments.
+    requestAnimationFrame(resize);
+
+    const ro = new ResizeObserver(resize);
     ro.observe(containerRef.current);
 
     return () => {
