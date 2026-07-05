@@ -47,9 +47,9 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
       chartRef.current = chart;
       seriesRef.current = series;
 
-      // Seed with whatever data we currently have.
-      if (candles.length) {
-        series.setData(candles as never);
+      // Seed with the latest data we have (may have arrived while importing).
+      if (dataRef.current.length) {
+        series.setData(dataRef.current as never);
         chart.timeScale().fitContent();
       }
 
