@@ -53,7 +53,9 @@ export function CandleChart({ candles }: { candles: Candle[] }) {
         chart.timeScale().fitContent();
       }
 
-      const ro = new ResizeObserver(() => chart.applyOptions({}));
+      const ro = new ResizeObserver(() => {
+        if (containerRef.current) chart.resize(containerRef.current.clientWidth, 420);
+      });
       ro.observe(containerRef.current);
       cleanupResize = () => ro.disconnect();
     })();
