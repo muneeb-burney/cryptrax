@@ -1,13 +1,28 @@
-export function formatPrice(value: number): string {
-  if (!Number.isFinite(value)) return "$0.00";
-  if (value === 0) return "$0.00";
-  const decimals = value >= 1 ? 2 : value >= 0.01 ? 4 : 8;
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+export type Currency = "USD" | "PKR";
+
+// Static display-only conversion rates. No live FX feed — these give a sensible
+// approximate value when the user chooses a non-USD display currency.
+export const CURRENCY_RATES: Record<Currency, number> = {
+  USD: 1,
+  PKR: 278.5,
+};
+
+const CURRENCY_SYMBOLS: Record<Currency, string> = {
+  USD: "$",
+  PKR: "₨",
+};
+
+export function formatPrice(value: number, currency: Currency = "USD"): string {
+  const symbol = CURRENCY_SYMBOLS[currency];
+  if (!Number.isFinite(value)) return `${symbol}0.00`;
+  const v = value * CURRENCY_RATES[currency];
+  if (v === 0) return `${symbol}0.00`;
+  const decimals = v >= 1 ? 2 : v >= 0.01 ? 4 : 8;
+  const formatted = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: decimals,
-  }).format(value);
+  }).format(v);
+  return `${symbol}${formatted}`;
 }
 
 // Manual compact formatting so output is identical on the server (workerd) and
@@ -31,9 +46,10 @@ function compact(value: number): string {
   return value.toFixed(2).replace(/\.?0+$/, "");
 }
 
-export function formatCompact(value: number): string {
-  if (!Number.isFinite(value) || value === 0) return "$0";
-  return `$${compact(value)}`;
+export function formatCompact(value: number, currency: Currency = "USD"): string {
+  const symbol = CURRENCY_SYMBOLS[currency];
+  if (!Number.isFinite(value) || value === 0) return `${symbol}0`;
+  return `${symbol}${compact(value * CURRENCY_RATES[currency])}`;
 }
 
 export function formatNumber(value: number): string {
