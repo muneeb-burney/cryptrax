@@ -28,8 +28,8 @@ export const Route = createFileRoute("/coin/$id")({
     context.queryClient.ensureQueryData(detailQuery(Number(params.id))),
   head: ({ loaderData }) => {
     const c = loaderData;
-    if (!c) return { meta: [{ title: "Coin — GlassCoin" }] };
-    const title = `${c.name} (${c.symbol}) Price & Chart — GlassCoin`;
+    if (!c) return { meta: [{ title: "Coin — Cryptrax" }] };
+    const title = `${c.name} (${c.symbol}) Price & Chart — Cryptrax`;
     const desc = `Live ${c.name} price ${formatPrice(c.price)}, ${c.percentChange24h >= 0 ? "up" : "down"} ${Math.abs(c.percentChange24h).toFixed(2)}% today. View candlestick charts and market stats.`;
     return {
       meta: [
