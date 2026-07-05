@@ -31,6 +31,12 @@ function Dashboard() {
   const { data: coins = [], isFetching, refetch } = useQuery(listingsQuery);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortKey>("rank");
+  // Avoid rendering the spinner state during SSR/hydration (client can begin a
+  // background refetch on mount, which would mismatch the server markup).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const spinning = mounted && isFetching;
+
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
