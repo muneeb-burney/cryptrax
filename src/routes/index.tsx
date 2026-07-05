@@ -5,7 +5,7 @@ import { Search, ArrowUpDown, RefreshCw } from "lucide-react";
 import { getListings, type Coin } from "@/lib/market.functions";
 import { CoinTable } from "@/components/CoinTable";
 import { PercentBadge } from "@/components/PercentBadge";
-import { useMoney } from "@/hooks/use-settings";
+import { useMoney, useSettings } from "@/hooks/use-settings";
 
 const listingsQuery = queryOptions({
   queryKey: ["listings"],
