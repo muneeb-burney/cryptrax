@@ -8,36 +8,46 @@ export interface Candle {
   close: number;
 }
 
-export type Timeframe = "5s" | "1m" | "5m" | "15m" | "1h" | "5h";
+export type Timeframe = "1m" | "5m" | "15m" | "1h" | "6h" | "1d";
 
-// Map each requested timeframe to a Binance base interval + aggregation group.
-// Binance supports 1s/1m/5m/15m/1h natively; 5s and 5h are aggregated.
-const TF_MAP: Record<Timeframe, { interval: string; group: number; base: number }> = {
-  "5s": { interval: "1s", group: 5, base: 750 },
-  "1m": { interval: "1m", group: 1, base: 200 },
-  "5m": { interval: "5m", group: 1, base: 200 },
-  "15m": { interval: "15m", group: 1, base: 200 },
-  "1h": { interval: "1h", group: 1, base: 200 },
-  "5h": { interval: "1h", group: 5, base: 600 },
+// Coinbase Exchange supports these granularities (in seconds) natively.
+// Binance is unusable here because it returns HTTP 403 to datacenter/CDN IPs.
+const TF_GRANULARITY: Record<Timeframe, number> = {
+  "1m": 60,
+  "5m": 300,
+  "15m": 900,
+  "1h": 3600,
+  "6h": 21600,
+  "1d": 86400,
 };
 
-const VALID_TF = new Set<string>(Object.keys(TF_MAP));
+const VALID_TF = new Set<string>(Object.keys(TF_GRANULARITY));
 
-function aggregate(rows: Candle[], group: number): Candle[] {
-  if (group <= 1) return rows;
-  const out: Candle[] = [];
-  for (let i = 0; i < rows.length; i += group) {
-    const chunk = rows.slice(i, i + group);
-    if (chunk.length === 0) continue;
-    out.push({
-      time: chunk[0].time,
-      open: chunk[0].open,
-      high: Math.max(...chunk.map((c) => c.high)),
-      low: Math.min(...chunk.map((c) => c.low)),
-      close: chunk[chunk.length - 1].close,
-    });
-  }
-  return out;
+// Some assets quote against USDT/USDC rather than USD on Coinbase.
+const QUOTES = ["USD", "USDT", "USDC"];
+
+async function fetchCoinbase(product: string, granularity: number): Promise<Candle[] | null> {
+  const url = `https://api.exchange.coinbase.com/products/${product}/candles?granularity=${granularity}`;
+  const res = await fetch(url, {
+    headers: { "User-Agent": "GlassCoin/1.0", Accept: "application/json" },
+  });
+  if (!res.ok) return null;
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const rows = (await res.json()) as any[];
+  if (!Array.isArray(rows)) return null;
+
+  // Coinbase returns [ time, low, high, open, close, volume ], newest first.
+  const parsed: Candle[] = rows.map((r) => ({
+    time: r[0],
+    low: r[1],
+    high: r[2],
+    open: r[3],
+    close: r[4],
+  }));
+  // Chart library needs ascending, de-duplicated time order.
+  parsed.sort((a, b) => a.time - b.time);
+  return parsed;
 }
 
 export const getCandles = createServerFn({ method: "GET" })
@@ -49,26 +59,16 @@ export const getCandles = createServerFn({ method: "GET" })
     return { symbol, timeframe: timeframe as Timeframe };
   })
   .handler(async ({ data }): Promise<{ candles: Candle[]; pair: string | null }> => {
-    const cfg = TF_MAP[data.timeframe];
-    const pair = `${data.symbol}USDT`;
-    const url = `https://api.binance.com/api/v3/klines?symbol=${pair}&interval=${cfg.interval}&limit=${cfg.base}`;
+    const granularity = TF_GRANULARITY[data.timeframe];
 
-    const res = await fetch(url);
-    if (!res.ok) {
-      // Most likely no USDT spot pair for this asset on Binance.
-      console.error("Binance klines failed", pair, res.status);
-      return { candles: [], pair: null };
+    for (const quote of QUOTES) {
+      const product = `${data.symbol}-${quote}`;
+      const candles = await fetchCoinbase(product, granularity);
+      if (candles && candles.length) {
+        return { candles, pair: product };
+      }
     }
 
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    const rows = (await res.json()) as any[];
-    const parsed: Candle[] = rows.map((r) => ({
-      time: Math.floor(r[0] / 1000),
-      open: parseFloat(r[1]),
-      high: parseFloat(r[2]),
-      low: parseFloat(r[3]),
-      close: parseFloat(r[4]),
-    }));
-
-    return { candles: aggregate(parsed, cfg.group), pair };
+    console.error("No Coinbase market found for", data.symbol);
+    return { candles: [], pair: null };
   });
