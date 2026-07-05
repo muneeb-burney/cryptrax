@@ -13,6 +13,7 @@ import { Compass } from "lucide-react";
 import appCss from "../styles.css?url";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthProvider } from "@/hooks/use-auth";
+import { SettingsProvider } from "@/hooks/use-settings";
 import { Navbar } from "@/components/Navbar";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
