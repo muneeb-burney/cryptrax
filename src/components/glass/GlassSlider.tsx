@@ -43,8 +43,8 @@ export function GlassSlider({
           aria-hidden="true"
           className={cn("glass-knob pointer-events-none absolute top-1/2 h-6 w-6 rounded-full", pressed && "is-pressed")}
           style={{
-            left: `calc(${pct}% * (100% - 24px) / 100% + 4px)`,
-            transform: `translate(-2px, -50%) scale(${pressed ? 1.14 : 1})`,
+            left: `calc(4px + (100% - 32px) * ${pct / 100})`,
+            transform: `translateY(-50%) scale(${pressed ? 1.14 : 1})`,
           }}
         />
         <input
