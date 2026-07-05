@@ -3,13 +3,17 @@ import { useState } from "react";
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import { ArrowLeft, Globe } from "lucide-react";
 import { getCoinDetail } from "@/lib/market.functions";
-import { getCandles, type Timeframe } from "@/lib/candles.functions";
+import { getCandles, getTicker, timeframeSeconds, type Timeframe } from "@/lib/candles.functions";
 import { CandleChart } from "@/components/CandleChart";
+import { GlassSegmented } from "@/components/glass/GlassSegmented";
+import { GlassToggle } from "@/components/glass/GlassToggle";
+import { GlassSlider } from "@/components/glass/GlassSlider";
 import { PercentBadge } from "@/components/PercentBadge";
 import { WatchButton } from "@/components/WatchButton";
 import { formatCompact, formatNumber, formatPrice } from "@/lib/format";
 
 const TIMEFRAMES: Timeframe[] = ["1m", "5m", "15m", "1h", "6h", "1d"];
+
 
 const detailQuery = (id: number) =>
   queryOptions({
