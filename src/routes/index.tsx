@@ -76,11 +76,10 @@ function Dashboard() {
           Live prices
         </span>
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          The crypto market, crystal clear
+          Track every move. Miss nothing.
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Live prices, 24-hour movements, and candlestick charts for the top 100 cryptocurrencies.
-          Sign in to build your personal watchlist.
+          Real-time crypto prices, 24h movements, and personalized watchlists built for clarity.
         </p>
       </section>
 
