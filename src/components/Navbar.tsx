@@ -38,31 +38,20 @@ export function Navbar() {
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
       <nav className="glass mx-auto flex max-w-6xl items-center justify-between rounded-3xl px-4 py-3 sm:px-6">
         <Link to="/" className="group flex items-center gap-2.5">
-          {/* Abstract liquid-glass mark */}
+          {/* Brand logo */}
           <span className="relative">
             {/* Ambient glow */}
             <span
               aria-hidden="true"
               className="absolute -inset-1 rounded-xl bg-gradient-to-tr from-primary to-accent opacity-40 blur-md transition-opacity duration-500 group-hover:opacity-70"
             />
-            {/* Glass container */}
-            <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-white/5 shadow-2xl backdrop-blur-xl">
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-br from-primary/25 to-transparent"
-              />
-              {/* Stylized candlestick mark */}
-              <span className="relative flex items-end gap-[3px]">
-                <span className="h-3.5 w-[3px] rounded-full bg-white/30" />
-                <span className="h-6 w-[3px] rounded-full bg-gradient-to-t from-primary to-accent shadow-[0_0_8px_var(--color-accent)]" />
-                <span className="h-4 w-[3px] rounded-full bg-white/30" />
-              </span>
-              {/* Top refraction line */}
-              <span
-                aria-hidden="true"
-                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"
-              />
-            </span>
+            <img
+              src="/favicon.png"
+              alt="Cryptrax logo"
+              width={40}
+              height={40}
+              className="relative h-10 w-10 rounded-xl border border-white/20 shadow-2xl"
+            />
           </span>
           <span className="flex items-baseline text-xl tracking-tight">
             <span className="font-extrabold text-foreground">Crypt</span>
