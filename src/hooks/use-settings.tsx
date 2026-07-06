@@ -22,7 +22,7 @@ export type Settings = {
 };
 
 const DEFAULTS: Settings = {
-  theme: "dark",
+  theme: "darker",
   currency: "USD",
   refreshInterval: 60,
 };
