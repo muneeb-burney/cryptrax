@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AuthProvider } from "@/hooks/use-auth";
 import { SettingsProvider } from "@/hooks/use-settings";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -168,6 +169,7 @@ function RootComponent() {
             <Navbar />
             {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
             <Outlet />
+            <Footer />
           </div>
         </AuthProvider>
       </SettingsProvider>
