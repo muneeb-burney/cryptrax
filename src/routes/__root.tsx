@@ -169,6 +169,7 @@ function RootComponent() {
             <Navbar />
             {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
             <Outlet />
+            <Footer />
           </div>
         </AuthProvider>
       </SettingsProvider>
